@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Flag Fun</title>
+	<link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+	<link rel="manifest" href="./favicon/site.webmanifest">
+	<link rel="mask-icon" href="./favicon/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+
+	<style>
+		*,body{
+			margin: 0;padding: 0;
+		}
+		.container{
+			font-family: sans-serif;
+			height: 100vh;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.card{
+			min-height: 400px;
+			width: 300px;
+			background: #e6e6e6;
+			border: 1px solid #c1c1c1;
+			text-align: center;
+			box-sizing: border-box;
+			border-radius: 3px;
+			box-shadow: 0px 0px 12px #ccb1b1;
+		}
+		.card__title{
+			font-size: 13px;
+			font-weight: 400;
+			margin: 20px auto;
+			color: #0e4a1d;
+		}
+		#ques{
+			font-size: 13px;
+			font-weight: 800;
+			margin: 10px auto;
+			color: #ff4e4e;
+		}
+		.card__btn--success{
+			cursor: pointer;
+			background: #178017;
+			border: navajowhite;
+			padding: 8px 30px;
+			color: #fff;
+			font-weight: 800;
+			letter-spacing: 2px;
+			border-radius: 4px;
+			font-size: 15px;
+			box-shadow: -1px 1px #054005,-2px 2px #054005,-3px 3px #054005;
+		}
+		.card__btn--success:active{
+			box-shadow: -1px 1px #054005;
+			margin-top: 2px;
+			margin-right: 2px;
+		}
+		.card__btn--primary{
+			cursor: pointer;
+			background: #00676c;;
+			border: navajowhite;
+			padding: 8px 30px;
+			color: #fff;
+			font-weight: 800;
+			letter-spacing: 2px;
+			border-radius: 4px;
+			font-size: 15px;
+			box-shadow: -1px 1px #044346,-2px 2px #044346,-3px 3px #044346;
+		}
+		.card__btn--primary:active{
+			box-shadow: -1px 1px #054005;
+			margin-top: 2px;
+			margin-right: 2px;
+		}
+		.card__btn--block{
+			display: block;
+			margin: auto;
+		}
+		figure img{
+			box-sizing: border-box;
+			box-shadow: 0px 1px 13px #4d4a4a;
+		}
+		#flag_img{
+			width: 204px;
+			height: 120px;
+		}
+		select{
+			border: 1px solid #1c828c;
+			padding: 5px;
+			background: #f5fffe;	
+		}
+		#result{
+			display: none;
+		}
+		#res_img{
+			width: 100px;
+			height: 100px;
+			display: block;
+			margin: 10px auto;
+			border-radius: 50%;	
+		}
+		.footer{
+			background: #100;
+			padding: 5px;
+			font-size: 14px;
+			color: #fff;
+			position: absolute;
+			bottom: 0;
+			text-align: center;
+		}
+		.footer a{
+			color: lightblue;
+		}
+		.bounce{
+			animation: animat .5s;
+		}
+		@keyframes animat {
+			0%{
+				width: 70px;
+				height: 70px;
+			}
+			100%{
+				width: 100px;
+				height: 100px;
+			}
+		}
+	</style>
+</head>
+<body ><!-- oncontextmenu="return false" -->
+	<div class="container">
+		<div class="card" id="play">
+			<div class="card__title">
+				<h1>Flag Roller</h1>
+			</div>
+			<p>Attempt: <span id="attempt">0</span> &nbsp;&nbsp;&nbsp;&nbsp; Score: <span id="score">0</span></p><br>
+			<div class="card_body" id="play">
+				<figure class="card__img">
+					<img id="flag_img" src="./flags/flag-of-Bangladesh.png" alt="flag">
+				</figure>
+				<figcaption id="ques"></figcaption>
+				<div class="card__input"></div>
+				<button id="start_btn" class="card__btn--success" onclick="start()">START</button>
+			</div>
+			<div class="card__body" id="result">
+				<figure class="card__img">
+					<img id="res_img">
+				</figure>
+				<figcaption id="res_cap"></figcaption>
+				<br>
+				<button class="card__btn--primary" onclick="tryAgain()">Try Again</button>
+				<br><br>
+			</div>
+		</div>
+		<div class="footer">
+			<p>Copyright &copy; 2022 <a href="=https/cuelead.com" rel="dofollow">Cuelead.com</a> All Rights Reserved. Developed by <a href="https//sam.cuelead.com">Sam Aun(Simon)</a></p>
+		</div>
+	</div>
+	<script>
+	var rand,randCounName,select,option,op_value,max,min;
+	var score_val = 0;
+	var attempt_val = 0;
+	var score = document.querySelector('#score');
+	var attempt = document.querySelector('#attempt');
+	var card__input = document.querySelector('.card__input');
+	var ques = document.getElementById('ques');
+	var res_cap = document.getElementById('res_cap');
+	var res_img = document.getElementById('res_img');
+	var start_btn = document.getElementById('start_btn');
+	var flag_img = document.getElementById('flag_img');
+	var countriesArr =["Samaun","Albania","Algeria","Andorra","Angola","Antigua","Argentina","Armenia","Afghanistan","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia","Botswana","Brazil","Brunei","Bulgaria","Burkina-Faso","Burundi","Cabo-Verde","Cambodia","Cameroon","Canada","Central-African-Republic","Chad","Chile","China","Colombia","Comoros","Congo","Congo-Democratic-Republic","Costa-Rica","Cote-d-Ivoire","Croatia","Cuba","Cyprus","Czech-Republic","Denmark","Djibouti","Dominica","Dominican-Republic","Ecuador","Egypt","El-Salvador","Equatorial-Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall-Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New-Zealand","Nicaragua","Niger","Nigeria","North-Korea","North-Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua-New-Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint-Kitts-and-Nevis","Saint-Lucia","Saint-Vincent-and-the-Grenadines","Samoa","San-Marino","Sao-Tome-and-Principe","Saudi-Arabia","Senegal","Serbia","Seychelles","Sierra-Leone","Singapore","Slovakia","Slovenia","Solomon-Islands","Somalia","South-Africa","South-Korea","South-Sudan","Spain","Sri-Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad-and-Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United-Arab-Emirates","United-Kingdom","United-States-of-America","Uruguay","Uzbekistan","Vanuatu","Vatican-City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+	function start(){
+		let sufal = setInterval(()=>{
+			max = countriesArr.length;
+			min = 1;
+			rand = Math.floor(Math.random() * (max - min + 1) + min);
+			randCounName = countriesArr[rand];
+			flag_img.src='./flags/flag-of-'+randCounName+'.png';
+		},100);
+
+		setTimeout(()=>{
+			start_btn.style.display="none";
+			clearInterval(sufal);
+			ques.innerHTML="Which country's flag is it?";
+			select = "<select id='select'>";
+			for(let i = 1; i<=countriesArr.length; i++){
+				select +="<option value='"+countriesArr[i]+"'>"+countriesArr[i]+"</option>";
+			}
+			select +="</select>";
+			card__input.innerHTML=select;
+
+			option = document.getElementById('select');
+			option.addEventListener("change",check);
+			function check(){
+				document.getElementById('result').style.display="block";
+				if(randCounName == option.value){
+					score_val = score_val + 1;
+					attempt_val = attempt_val + 1;
+					res_img.src="./result/tick.gif";
+					res_cap.innerHTML="Right Answer :)";
+					res_cap.style.color="green";
+					new Audio('./result/tick.mp3').play();
+					score.innerHTML= score_val;
+					attempt.innerHTML= attempt_val;
+					if(res_img.classList != 'bounce'){
+						res_img.classList.add("bounce");
+					}
+					setInterval(()=>res_img.classList.remove("bounce"),200);
+				}else{
+					score_val = score_val - 1;
+					attempt_val = attempt_val + 1;
+					res_img.src="./result/cross.png";
+					res_cap.innerHTML="Wrong :(";
+					res_cap.style.color="red";
+					new Audio('./result/cross.mp3').play();
+					score.innerHTML= score_val;
+					attempt.innerHTML= attempt_val;
+					if(res_img.classList != 'bounce'){
+						res_img.classList.add("bounce");
+					}
+					setInterval(()=>res_img.classList.remove("bounce"),500);
+				}
+			}
+		},3000);
+	}
+	function tryAgain(){
+		start_btn.style.display="inline";
+		card__input.innerHTML='';
+		document.getElementById('result').style.display="none";
+	}
+	    
+	</script>
+</body>
+</html>
